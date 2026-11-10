@@ -48,7 +48,9 @@ const T = {
   next3: { en: "After your visit: a quick thank-you, with a link to leave a Google review", es: "Después de tu cita: un gracias, con un enlace para dejar una reseña en Google" },
   textFrom: { en: "Casa Luz", es: "Casa Luz" },
   textBody: { en: "Thanks for coming in today, %s! If you loved it, a quick Google review helps us a lot: g.page/r/casaluz", es: "¡Gracias por venir hoy, %s! Si te encantó, una reseña rápida en Google nos ayuda mucho: g.page/r/casaluz" },
-  textNote: { en: "The review text goes out on its own. More reviews, higher on Google Maps.", es: "El texto de la reseña sale solo. Más reseñas, más arriba en Google Maps." },
+  next4: { en: "In 6 weeks: a nudge to book your next visit, with your stylist already picked", es: "En 6 semanas: un aviso para tu próxima cita, con tu estilista ya escogida" },
+  rebookBody: { en: "Hi %n! It's been 6 weeks since your %s with %t. Ready for the next one? Book in one tap: casaluz.com/book", es: "¡Hola %n! Ya van 6 semanas desde tu %s con %t. ¿Lista para la próxima? Reserva en un toque: casaluz.com/book" },
+  textNote: { en: "Both texts go out on their own. More reviews put you higher on Google Maps, and clients come back on schedule.", es: "Los dos textos salen solos. Más reseñas te suben en Google Maps, y los clientes vuelven a tiempo." },
   home: { en: "Back to Casa Luz", es: "Volver a Casa Luz" },
   days: { en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"] },
   tour: {
@@ -58,7 +60,7 @@ const T = {
       ["#main .view", "Each person picks their own service, with time and price."],
       ["#main .view", "Then their stylist, or Anyone. Each card shows that stylist's next opening."],
       [".when", "Only times when everyone can be seen together show up. No back and forth on WhatsApp."],
-      [".confirm", "They see everything before paying, then put down a deposit so no-shows cost you less. After the visit, a text asks for a Google review on its own."],
+      [".confirm", "They see everything before paying, then put down a deposit so no-shows cost you less. After the visit, texts ask for a Google review and later invite them back, on their own."],
       ["#bottom", "Back and Next always stay in the same spot."],
     ],
     es: [
@@ -67,7 +69,7 @@ const T = {
       ["#main .view", "Cada persona escoge su servicio, con tiempo y precio."],
       ["#main .view", "Después su estilista, o Cualquiera. Cada tarjeta muestra su próximo espacio libre."],
       [".when", "Solo aparecen horas en que todas pueden ir juntas. Nada de ir y venir por WhatsApp."],
-      [".confirm", "Ven todo antes de pagar, y dejan un depósito para que no se pierdan citas. Después de la cita, un texto pide una reseña en Google, solo."],
+      [".confirm", "Ven todo antes de pagar, y dejan un depósito para que no se pierdan citas. Después de la cita, unos textos piden una reseña en Google y luego los invitan a volver, solos."],
       ["#bottom", "Atrás y Siguiente siempre están en el mismo lugar."],
     ],
   },
@@ -208,8 +210,9 @@ function render() {
   if (S.done) {
     const first = (S.nm || "").split(" ")[0] || (lang === "es" ? "Ana" : "Ana");
     $("#main").innerHTML = `<div class="done view enter"><div class="check">✓</div><h2>${t("doneH")}</h2><p>${t("doneP")}</p>
-      <div class="after"><p class="after-h">${t("nextH")}</p><ol class="after-l"><li>${t("next1")}</li><li>${t("next2")}</li><li><b>${t("next3")}</b></li></ol>
-        <div class="sms"><span class="sms-from">${t("textFrom")}</span><span class="bubble">${fill("textBody", first)}</span></div>
+      <div class="after"><p class="after-h">${t("nextH")}</p><ol class="after-l"><li>${t("next1")}</li><li>${t("next2")}</li><li><b>${t("next3")}</b></li><li><b>${t("next4")}</b></li></ol>
+        <div class="sms"><span class="sms-from">${t("textFrom")}</span><span class="bubble">${fill("textBody", first)}</span>
+          <span class="bubble">${t("rebookBody").replace("%n", first).replace("%s", (SALON.services[S.g[0].svc][lang]).toLowerCase()).replace("%t", tech(S.who[0]).name)}</span></div>
         <p class="after-note">${t("textNote")}</p></div>
       <a class="home" href="index.html">${t("home")}</a></div>`;
     $("#bottom").style.display = "none";
@@ -239,7 +242,7 @@ function render() {
   syncNext();
 }
 
-$("#nextBtn").onclick = () => { if (S.step === 4) { S.nm = $("#nm").value.trim(); S.done = true; } else S.step++; scrollTo(0, 0); render(); };
+$("#nextBtn").onclick = () => { if (S.step === 4) { const [h, m] = S.time.split(":").map(Number); S.who = assign(fromKey(S.day), h, m); S.nm = $("#nm").value.trim(); S.done = true; } else S.step++; scrollTo(0, 0); render(); };
 $("#backBtn").onclick = () => { S.step = Math.max(0, S.step - 1); render(); };
 document.querySelectorAll(".lang button").forEach((b) => b.onclick = () => { lang = b.dataset.lang; render(); if (tourOn) showStep(); });
 
