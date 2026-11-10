@@ -42,6 +42,13 @@ const T = {
   },
   doneH: { en: "You're booked.", es: "¡Listo, nos vemos!" },
   doneP: { en: "We've texted your confirmation, and we'll remind you the day before. See you at Casa Luz.", es: "Te mandamos la confirmación por texto y un recordatorio el día antes. Nos vemos en Casa Luz." },
+  nextH: { en: "What happens next", es: "Lo que sigue" },
+  next1: { en: "Now: a text confirming your visit", es: "Ahora: un texto confirmando tu cita" },
+  next2: { en: "The day before: a reminder", es: "El día antes: un recordatorio" },
+  next3: { en: "After your visit: a quick thank-you, with a link to leave a Google review", es: "Después de tu cita: un gracias, con un enlace para dejar una reseña en Google" },
+  textFrom: { en: "Casa Luz", es: "Casa Luz" },
+  textBody: { en: "Thanks for coming in today, %s! If you loved it, a quick Google review helps us a lot: g.page/r/casaluz", es: "¡Gracias por venir hoy, %s! Si te encantó, una reseña rápida en Google nos ayuda mucho: g.page/r/casaluz" },
+  textNote: { en: "The review text goes out on its own. More reviews, higher on Google Maps.", es: "El texto de la reseña sale solo. Más reseñas, más arriba en Google Maps." },
   home: { en: "Back to Casa Luz", es: "Volver a Casa Luz" },
   days: { en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"], es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"] },
   tour: {
@@ -51,7 +58,7 @@ const T = {
       ["#main .view", "Each person picks their own service, with time and price."],
       ["#main .view", "Then their stylist, or Anyone. Each card shows that stylist's next opening."],
       [".when", "Only times when everyone can be seen together show up. No back and forth on WhatsApp."],
-      [".confirm", "They see everything before paying, then put down a deposit so no-shows cost you less."],
+      [".confirm", "They see everything before paying, then put down a deposit so no-shows cost you less. After the visit, a text asks for a Google review on its own."],
       ["#bottom", "Back and Next always stay in the same spot."],
     ],
     es: [
@@ -60,7 +67,7 @@ const T = {
       ["#main .view", "Cada persona escoge su servicio, con tiempo y precio."],
       ["#main .view", "Después su estilista, o Cualquiera. Cada tarjeta muestra su próximo espacio libre."],
       [".when", "Solo aparecen horas en que todas pueden ir juntas. Nada de ir y venir por WhatsApp."],
-      [".confirm", "Ven todo antes de pagar, y dejan un depósito para que no se pierdan citas."],
+      [".confirm", "Ven todo antes de pagar, y dejan un depósito para que no se pierdan citas. Después de la cita, un texto pide una reseña en Google, solo."],
       ["#bottom", "Atrás y Siguiente siempre están en el mismo lugar."],
     ],
   },
@@ -199,7 +206,12 @@ let shownStep = -1;
 function render() {
   words(); progress();
   if (S.done) {
-    $("#main").innerHTML = `<div class="done view"><div class="check">✓</div><h2>${t("doneH")}</h2><p>${t("doneP")}</p><a class="home" href="index.html">${t("home")}</a></div>`;
+    const first = (S.nm || "").split(" ")[0] || (lang === "es" ? "Ana" : "Ana");
+    $("#main").innerHTML = `<div class="done view enter"><div class="check">✓</div><h2>${t("doneH")}</h2><p>${t("doneP")}</p>
+      <div class="after"><p class="after-h">${t("nextH")}</p><ol class="after-l"><li>${t("next1")}</li><li>${t("next2")}</li><li><b>${t("next3")}</b></li></ol>
+        <div class="sms"><span class="sms-from">${t("textFrom")}</span><span class="bubble">${fill("textBody", first)}</span></div>
+        <p class="after-note">${t("textNote")}</p></div>
+      <a class="home" href="index.html">${t("home")}</a></div>`;
     $("#bottom").style.display = "none";
     return;
   }
@@ -227,7 +239,7 @@ function render() {
   syncNext();
 }
 
-$("#nextBtn").onclick = () => { if (S.step === 4) S.done = true; else S.step++; scrollTo(0, 0); render(); };
+$("#nextBtn").onclick = () => { if (S.step === 4) { S.nm = $("#nm").value.trim(); S.done = true; } else S.step++; scrollTo(0, 0); render(); };
 $("#backBtn").onclick = () => { S.step = Math.max(0, S.step - 1); render(); };
 document.querySelectorAll(".lang button").forEach((b) => b.onclick = () => { lang = b.dataset.lang; render(); if (tourOn) showStep(); });
 
