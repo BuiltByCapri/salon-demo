@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Casa Luz · Beauty salon in Miami</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Display&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+/* Swap these per salon. */
+:root{
+  --ink:#1A1716; --grey:#6E6764; --line:#E7E2DE; --cream:#FAF6F2; --peach:#F4CCBD; --peach-dk:#ECB7A3; --pale:#FBEEE9;
+  --serif:"Libre Caslon Display",Georgia,serif; --sans:"Jost",system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:#fff;color:var(--ink);font:300 16px/1.65 var(--sans);-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+a{color:inherit}
+img{display:block;max-width:100%}
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.caps{text-transform:uppercase;letter-spacing:.18em;font-weight:400}
+
+/* Things fade up as they come into view */
+.rv{opacity:0;transform:translateY(28px);transition:opacity 1.1s ease,transform 1.1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.12s}.rv.d2{transition-delay:.24s}.rv.d3{transition-delay:.36s}
+
+/* Top bar */
+.util{background:var(--pale);font-size:12.5px;display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:.6rem 24px;font-weight:400}
+.util .note{color:var(--grey);text-align:center;flex:1}
+.util .note button{text-decoration:underline;color:var(--ink);font-size:12.5px;margin-left:.35rem}
+.lang{display:flex;gap:.7rem;white-space:nowrap}
+.lang button{font-size:12.5px;color:var(--grey)}
+.lang button[aria-pressed="true"]{color:var(--ink);font-weight:500}
+.util .loc{white-space:nowrap}
+@media(max-width:700px){.util .loc{display:none}.util .note{text-align:left}}
+
+/* Header */
+header.top{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.97);border-bottom:1px solid #f1eeec}
+.bar{display:flex;align-items:center;justify-content:space-between;gap:1rem;height:96px;padding:0 24px}
+.word{font:400 21px var(--sans);letter-spacing:.42em;text-decoration:none;white-space:nowrap}
+.menu{display:none;gap:3.2rem;font-size:13px;color:#56504d}
+.menu a{text-decoration:none;position:relative}
+.menu a::after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:1px;background:var(--ink);transform:scaleX(0);transition:transform .35s}
+.menu a:hover::after{transform:scaleX(1)}
+@media(min-width:1000px){.menu{display:flex}}
+.book-btn{background:var(--peach);padding:1rem 3.2rem;font-size:12.5px;text-decoration:none;white-space:nowrap;transition:background .3s}
+.book-btn:hover{background:var(--peach-dk)}
+@media(max-width:600px){.bar{height:70px;padding:0 16px}.word{font-size:15px;letter-spacing:.28em}.book-btn{padding:.75rem 1.1rem;font-size:11px;letter-spacing:.1em}}
+
+/* Hero */
+.hero{position:relative;margin:0 24px;height:calc(100vh - 140px);min-height:560px;max-height:900px;overflow:hidden;display:grid;place-items:center;text-align:center;color:#fff}
+@media(max-width:600px){.hero{margin:0 12px;height:78vh}}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;animation:drift 26s ease-in-out infinite alternate}
+@keyframes drift{from{transform:scale(1.02)}to{transform:scale(1.14) translate(-1.5%,1%)}}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(26,16,12,.18) 0%,rgba(26,16,12,.38) 55%,rgba(26,16,12,.55) 100%)}
+.hero .in{position:relative;z-index:1;padding:0 20px;max-width:1100px}
+.hero .kick{font-size:12px;letter-spacing:.42em;color:rgba(255,255,255,.85)}
+.hero h1{font:400 clamp(50px,8.4vw,118px)/.98 var(--serif);letter-spacing:-.015em;margin:1.4rem 0 0}
+.hero h1 em{font-style:italic}
+.hero .press{font:500 clamp(14px,1.35vw,17px) var(--sans);letter-spacing:.26em;text-transform:uppercase;color:#fff;margin-top:1.6rem;text-shadow:0 1px 12px rgba(30,18,14,.45)}
+.hero .press .stars{font-size:1.15em;letter-spacing:.12em}
+.discover{display:inline-flex;align-items:center;gap:.9rem;margin-top:2.8rem;border:1px solid rgba(255,255,255,.75);background:rgba(30,20,16,.28);color:#fff;text-decoration:none;font-size:12px;padding:1.05rem 1.8rem;transition:background .3s}
+.discover:hover{background:rgba(255,255,255,.14)}
+.discover i{width:22px;height:22px;border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;font-style:normal;font-size:8px}
+.hero .in > *{animation:rise 1.4s cubic-bezier(.2,.7,.2,1) both}
+.hero .in > :nth-child(2){animation-delay:.15s}.hero .in > :nth-child(3){animation-delay:.3s}.hero .in > :nth-child(4){animation-delay:.45s}
+@keyframes rise{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:none}}
+
+/* Moving ribbon */
+.ribbon{overflow:hidden;border-bottom:1px solid var(--line);padding:1.4rem 0;white-space:nowrap}
+.ribbon .track{display:inline-flex;gap:3rem;animation:slide 48s linear infinite;font:italic 400 clamp(26px,3vw,40px) var(--serif);color:#3a3330}
+.ribbon .track span::after{content:"✦";font-style:normal;font-size:.45em;color:var(--peach-dk);margin-left:3rem;vertical-align:middle}
+@keyframes slide{to{transform:translateX(-50%)}}
+
+/* Intro statement */
+.intro{text-align:center;padding:7rem 24px 6rem;max-width:980px;margin:0 auto}
+.intro .caps{font-size:12px;color:var(--grey)}
+.intro p.big{font:400 clamp(30px,3.6vw,48px)/1.22 var(--serif);margin-top:1.8rem}
+.intro p.big em{font-style:italic}
+.facts{display:flex;justify-content:center;flex-wrap:wrap;gap:.5rem 2.8rem;margin-top:3rem;font-size:14px;color:var(--grey);font-weight:400}
+.facts b{color:var(--ink);font-weight:600}
+#facts > span:first-child{font-size:16px;color:var(--ink)}
+#facts > span:first-child b{font-size:18px}
+.stars{letter-spacing:.1em;color:var(--ink)}
+
+/* Sections */
+.sec{padding:4.5rem 24px 5rem;scroll-margin-top:96px}
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;margin-bottom:2.2rem}
+h2{font:400 clamp(34px,3.6vw,48px)/1.08 var(--serif)}
+h2 em{font-style:italic}
+.sec-head p{margin-top:.8rem;font-size:16px;color:var(--grey)}
+.more{font-size:15px;text-decoration:underline;text-underline-offset:4px;white-space:nowrap;font-weight:400}
+.cards{display:grid;gap:14px;grid-template-columns:repeat(4,1fr)}
+@media(max-width:900px){.cards{grid-template-columns:repeat(2,1fr)}}
+.card{text-align:left;display:block}
+.card .ph{overflow:hidden;background:#f2efed;position:relative}
+.card img{width:100%;aspect-ratio:3/4;object-fit:cover;transition:transform 1.2s cubic-bezier(.2,.7,.2,1)}
+.card:hover img{transform:scale(1.06)}
+.card h3{font:500 15px var(--sans);margin-top:1rem;letter-spacing:.02em}
+.card p{font-size:14px;color:var(--grey);margin-top:.1rem}
+
+/* Team: names over the photo, editorial */
+.team .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(20,14,12,.6))}
+.team .over{position:absolute;left:1.2rem;right:1.2rem;bottom:1.1rem;z-index:1;color:#fff}
+.team .over b{display:block;font:400 clamp(28px,2.6vw,36px)/1 var(--serif)}
+.team .over span{font-size:13px;letter-spacing:.14em;text-transform:uppercase;opacity:.9}
+.team .open{font-size:13.5px;color:var(--grey);margin-top:.8rem}
+.team .card[aria-pressed="true"] .ph{outline:2px solid var(--ink);outline-offset:4px}
+
+/* Feature split */
+.split{display:grid;align-items:center;background:var(--cream)}
+@media(min-width:900px){.split{grid-template-columns:1.05fr 1fr}}
+.split .ph{overflow:hidden}
+.split .ph img{width:100%;height:100%;min-height:520px;max-height:820px;object-fit:cover}
+.split .tx{padding:4rem 24px}
+@media(min-width:900px){.split .tx{padding:4rem 7vw}}
+.split h2{font-size:clamp(46px,5.4vw,76px);line-height:1}
+.points{list-style:none;margin:2.6rem 0 2.8rem}
+.points li{border-left:1px solid #cfc6c0;padding:.1rem 0 .1rem 1.5rem;margin-bottom:1.7rem;font:400 23px/1.3 var(--serif);color:#4d4643}
+.arrow{width:58px;height:58px;border-radius:50%;background:var(--peach);display:grid;place-items:center;text-decoration:none;font-size:20px;box-shadow:0 12px 28px rgba(236,183,163,.6);transition:transform .3s}
+.arrow:hover{transform:translateX(4px)}
+
+/* Booking */
+.booksec{background:#fff;border-top:1px solid var(--line)}
+.book{display:grid;gap:14px}
+@media(min-width:950px){.book{grid-template-columns:.9fr 1.1fr}}
+.panel{border:1px solid var(--line);padding:1.8rem}
+.step{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);margin-bottom:1rem;font-weight:400}
+.step.gap{margin-top:2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.5rem}
+.chip{border:1px solid var(--line);padding:.6rem 1.05rem;font-size:14px;font-weight:400;transition:border-color .2s}
+.chip:hover{border-color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip small{color:inherit;opacity:.6;margin-left:.35rem}
+.cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
+.cal-head b{font:400 24px var(--serif);text-transform:capitalize}
+.cal-head button{width:36px;height:36px;border:1px solid var(--line)}
+.cal-head button:disabled{opacity:.3;cursor:default}
+.grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;text-align:center}
+.dow{font-size:11px;letter-spacing:.12em;color:var(--grey);padding:.3rem 0;text-transform:uppercase}
+.day{aspect-ratio:1;font-size:15px;font-weight:400;display:grid;place-items:center;position:relative;transition:border-color .2s}
+.day:disabled{color:#cdc8c5;cursor:default}
+.day.open{border:1px solid var(--line)}
+.day.open::after{content:"";position:absolute;bottom:15%;width:4px;height:4px;border-radius:50%;background:var(--peach-dk)}
+.day.open:hover{border-color:var(--ink)}
+.day[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.legend{font-size:12.5px;color:var(--grey);margin-top:.8rem}
+.times{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:6px}
+.time{border:1px solid var(--line);padding:.6rem 0;font-size:14px;font-weight:400}
+.time:hover{border-color:var(--ink)}
+.time[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.time:disabled{text-decoration:line-through;color:#cdc8c5;cursor:default;border-color:#f2efed}
+.empty{font-size:14px;color:var(--grey)}
+.summary{border-top:1px solid var(--line);margin-top:1.6rem;padding-top:1.3rem}
+.summary .row{display:flex;justify-content:space-between;gap:1rem;padding:.22rem 0;font-size:15px;font-weight:400}
+.summary .row span:first-child{color:var(--grey)}
+.fields{display:grid;gap:.6rem;margin-top:1.3rem}
+.fields input{width:100%;font:inherit;font-weight:400;border:1px solid var(--line);padding:.9rem 1rem;color:var(--ink)}
+.pay{width:100%;margin-top:1rem;background:var(--peach);padding:1.05rem;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase;transition:background .3s}
+.pay:not(:disabled):hover{background:var(--peach-dk)}
+.pay:disabled{opacity:.45;cursor:default}
+.fine{font-size:12px;color:var(--grey);margin-top:.7rem;text-align:center}
+.done{text-align:center;padding:2.2rem 1rem}
+.done .check{width:64px;height:64px;border-radius:50%;background:var(--peach);display:grid;place-items:center;margin:0 auto 1.1rem;font-size:24px;animation:pop .5s cubic-bezier(.2,1.4,.4,1)}
+@keyframes pop{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.done h3{font:400 34px var(--serif);margin-bottom:.4rem}
+.done p{color:var(--grey)}
+.again{margin-top:1.3rem;border:1px solid var(--ink);padding:.75rem 1.3rem;font-size:12.5px;letter-spacing:.16em;text-transform:uppercase}
+
+/* Reviews */
+.loved{background:var(--cream);padding:5rem 24px 5.5rem;text-align:center;scroll-margin-top:96px}
+.loved .sum{font-size:13.5px;color:#3d3633;margin:.8rem 0 2.2rem;line-height:1.9;font-weight:400}
+.reviews{display:grid;gap:20px;grid-template-columns:repeat(3,1fr);text-align:left}
+@media(max-width:900px){.reviews{grid-template-columns:1fr}}
+.review{border:1px solid #ddd5cf;padding:1.5rem 1.3rem 1.3rem;background:rgba(255,255,255,.5)}
+.review p{font:400 21px/1.35 var(--serif);margin:.7rem 0 .9rem}
+.review b{font-size:13px;font-weight:500;letter-spacing:.06em}
+
+/* Founder */
+.founder{display:grid;gap:2.5rem;padding:5.5rem 24px;align-items:center}
+@media(min-width:900px){.founder{grid-template-columns:460px 1fr;gap:90px;padding:6rem 9vw}}
+.founder .ph{border-bottom:1px solid var(--line);padding-bottom:22px}
+.founder img{width:100%;aspect-ratio:9/11;object-fit:cover}
+.founder h2{font-size:clamp(48px,6vw,84px);line-height:.98}
+.founder blockquote{border-left:1px solid #c9c0ba;padding-left:1.8rem;margin:2.8rem 0 2.1rem;font:italic 300 19px/1.5 var(--sans)}
+.founder p{font-size:18px;line-height:1.65;color:#68615e}
+.sig{border-top:1px solid #d3cbc6;margin-top:3.6rem;padding-top:2.4rem;max-width:460px}
+.sig b{display:block;font:300 clamp(32px,3.4vw,46px) var(--sans)}
+.sig span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey)}
+
+/* Instagram strip */
+.gram{position:relative}
+.gram .tag{text-align:center;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey);padding:0 0 1.2rem}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(200px,calc((100% - 10px)/6));gap:2px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:0 24px}
+.strip::-webkit-scrollbar{display:none}
+.strip .cell{overflow:hidden}
+.strip img{width:100%;aspect-ratio:9/14;object-fit:cover;scroll-snap-align:start;transition:transform 1s}
+.strip .cell:hover img{transform:scale(1.05)}
+.nav-btn{position:absolute;top:55%;transform:translateY(-50%);width:34px;height:34px;background:rgba(255,255,255,.8);display:grid;place-items:center;font-size:16px;z-index:2}
+.nav-btn.l{left:34px}.nav-btn.r{right:34px}
+
+/* Footer */
+.foot{background:var(--ink);color:#fff;padding:4rem 24px 1.6rem;margin-top:4rem}
+.cols{display:grid;gap:2.2rem;grid-template-columns:1.5fr repeat(3,1fr) 1.9fr}
+@media(max-width:1000px){.cols{grid-template-columns:1fr 1fr}}
+.foot .word{color:#fff;display:inline-block;margin-bottom:1.3rem;font-size:17px}
+.foot p{font-size:15px;line-height:1.55;color:#d9d3cf}
+.foot h4{font-size:12.5px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;margin-bottom:1.2rem}
+.foot a.l{display:block;text-decoration:none;font-size:15px;margin-bottom:.8rem;color:#e9e4e0}
+.foot a.l:hover{color:#fff;text-decoration:underline}
+.foot .hrs{font-size:14px;line-height:1.9}
+.join form{display:flex;margin-top:1.2rem}
+.join input{flex:1;min-width:0;background:transparent;border:1px solid #57514e;color:#fff;padding:.95rem 1rem;font:inherit}
+.join button{background:var(--peach);color:var(--ink);width:50px;font-size:18px}
+.legal{display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem;border-top:1px solid #34302e;margin-top:3.2rem;padding-top:1.4rem;font-size:13px;color:#b9b2ae}
+.legal a{color:#e0dad6}
+
+/* WhatsApp, styled like a chat button */
+.wa{position:fixed;right:22px;bottom:22px;width:60px;height:60px;border-radius:18px;background:var(--peach);color:var(--ink);display:grid;place-items:center;box-shadow:0 12px 28px rgba(0,0,0,.16);z-index:30;transition:transform .3s}
+.wa:hover{transform:translateY(-3px)}
+
+/* Guided tour */
+.tour-dim{position:fixed;inset:0;z-index:40;pointer-events:none}
+.tour-ring{position:absolute;box-shadow:0 0 0 9999px rgba(20,16,14,.55);transition:all .18s ease-out;outline:2px solid var(--peach);outline-offset:4px}
+.tour-tip{position:fixed;z-index:41;width:min(330px,calc(100vw - 32px));background:#fff;padding:1.25rem 1.3rem;font-size:15px;font-weight:400;line-height:1.5;transition:top .18s,left .18s;box-shadow:0 18px 44px rgba(0,0,0,.25)}
+.tour-tip .n{font-size:11px;letter-spacing:.18em;color:var(--grey);margin-bottom:.4rem}
+.tour-tip .act{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
+.tour-tip .act button{font-size:13px;color:var(--grey)}
+.tour-tip .act .go{background:var(--peach);color:var(--ink);padding:.55rem 1.2rem;font-weight:500}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}.rv{opacity:1;transform:none}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="util">
+  <span class="loc">Coral Way · Miami</span>
+  <span class="note"><span data-t="demoBar"></span><button type="button" id="tourBtn" data-t="tourBtn"></button></span>
+  <div class="lang" role="group" aria-label="Language">
+    <button type="button" data-lang="en" aria-pressed="true">English</button>
+    <button type="button" data-lang="es" aria-pressed="false">Español</button>
+  </div>
+</div>
+
+<header class="top">
+  <div class="bar">
+    <a class="word" href="#">CASA LUZ</a>
+    <nav class="menu caps">
+      <a href="#servicios" data-t="navSvc"></a>
+      <a href="#equipo" data-t="navTeam"></a>
+      <a href="#resenas" data-t="navRev"></a>
+      <a href="#visita" data-t="navVisit"></a>
+    </nav>
+    <a class="book-btn caps" href="booking.html" data-t="bookNow"></a>
+  </div>
+</header>
+
+<section class="hero">
+  <img src="https://images.unsplash.com/photo-1633681138600-295fcd688876?w=2400&q=82&auto=format" alt="" />
+  <div class="in">
+    <p class="kick caps" data-t="heroKick"></p>
+    <h1 data-t="heroQ" data-html></h1>
+    <p class="press"><span class="stars" style="color:#fff">★★★★★</span>&nbsp; <span data-t="heroBy"></span></p>
+    <a class="discover caps" href="booking.html"><span data-t="discover"></span><i>▶</i></a>
+  </div>
+</section>
+
+<div class="ribbon" aria-hidden="true"><div class="track" id="track"></div></div>
+
+<section class="intro">
+  <p class="caps rv" data-t="introK"></p>
+  <p class="big rv d1" data-t="introP" data-html></p>
+  <div class="facts rv d2" id="facts">
+    <span><span class="stars">★★★★★</span> <b>4.9</b> <span data-t="onGoogle"></span></span>
+    <span>2401 SW 22nd St, Miami</span>
+    <span><b data-t="openTill"></b></span>
+  </div>
+</section>
+
+<section class="sec" id="servicios">
+  <div class="sec-head rv">
+    <div><h2 data-t="svcH" data-html></h2><p data-t="svcP"></p></div>
+    <a class="more" href="booking.html"><span data-t="svcAll"></span> →</a>
+  </div>
+  <div class="cards" id="svcs"></div>
+</section>
+
+<section class="split">
+  <div class="ph"><img class="rv" src="https://images.unsplash.com/photo-1629397685944-7073f5589754?w=1600&q=80&auto=format" alt="" loading="lazy" /></div>
+  <div class="tx">
+    <h2 class="rv" data-t="featH" data-html></h2>
+    <ul class="points"><li class="rv d1" data-t="feat1"></li><li class="rv d2" data-t="feat2"></li><li class="rv d3" data-t="feat3"></li></ul>
+    <a class="arrow rv d3" href="booking.html" aria-label="Reservar">→</a>
+  </div>
+</section>
+
+<section class="sec" id="equipo">
+  <div class="sec-head rv"><div><h2 data-t="teamH" data-html></h2><p data-t="teamP"></p></div></div>
+  <div class="cards team" id="team"></div>
+</section>
+
+
+<section class="loved" id="resenas">
+  <h2 class="rv" data-t="revH" data-html></h2>
+  <p class="sum rv d1"><span class="stars">★★★★★</span><br><span data-t="revSum"></span></p>
+  <div class="reviews" id="reviews"></div>
+</section>
+
+<section class="founder">
+  <div class="ph rv"><img src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=1100&q=80&auto=format" alt="" loading="lazy" /></div>
+  <div>
+    <h2 class="rv" data-t="fH" data-html></h2>
+    <blockquote class="rv d1" data-t="fQ"></blockquote>
+    <p class="rv d2" data-t="fP"></p>
+    <div class="sig rv d3"><b>Lucía Méndez</b><span data-t="fRole"></span></div>
+  </div>
+</section>
+
+<section class="gram" aria-label="Instagram">
+  <p class="tag">@casaluzmiami</p>
+  <button type="button" class="nav-btn l" aria-label="Previous">‹</button>
+  <div class="strip" id="strip"></div>
+  <button type="button" class="nav-btn r" aria-label="Next">›</button>
+</section>
+
+<footer class="foot" id="visita">
+  <div class="cols">
+    <div><span class="word">CASA LUZ</span><p data-t="footAbout"></p></div>
+    <div><h4 data-t="navSvc"></h4><a class="l" href="#servicios" data-t="c1"></a><a class="l" href="#servicios" data-t="c2"></a><a class="l" href="#servicios" data-t="c3"></a><a class="l" href="#servicios" data-t="c4"></a></div>
+    <div><h4 data-t="fSalon"></h4><a class="l" href="#equipo" data-t="navTeam"></a><a class="l" href="#resenas" data-t="navRev"></a><a class="l" href="booking.html" data-t="bookNow"></a></div>
+    <div><h4 data-t="navVisit"></h4><p class="hrs">2401 SW 22nd St<br>Miami, FL 33145</p><p class="hrs" id="hours" style="margin-top:.8rem"></p></div>
+    <div class="join"><h4 data-t="joinH"></h4><p data-t="joinP"></p><form id="joinForm"><input type="email" placeholder="Email" required /><button type="submit" aria-label="Join">→</button></form></div>
+  </div>
+  <div class="legal"><span>© 2026 Casa Luz Salon</span><span data-t="credit" data-html></span></div>
+</footer>
+
+<a class="wa" href="#" onclick="return false" aria-label="WhatsApp" id="waBtn">
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2Zm0 18.2c-1.5 0-3-.4-4.3-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2Zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8s-.4-.1-.6.1-.7.8-.8 1-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2s.2-1.1.2-1.2-.2-.2-.5-.3Z"/></svg>
+</a>
+
+<script>
+// ---------- Swap this block per salon ----------
+const IMG = (id, w = 900) => `https://images.unsplash.com/photo-${id}?w=${w}&q=80&auto=format`;
+const SALON = {
+  deposit: 20,
+  techs: [
+    { id: "valeria", name: "Valeria", img: "img/valeria.jpg", role: { es: "Color y balayage", en: "Color and balayage" }, week: [null, null, [10, 19], [10, 19], [10, 20], [10, 20], [9, 17]], svcs: ["color", "balayage", "blowout", "cut"] },
+    { id: "camila", name: "Camila", img: "img/camila.jpg", role: { es: "Cortes y blowouts", en: "Cuts and blowouts" }, week: [null, [10, 18], null, [10, 19], [12, 20], [9, 20], [9, 17]], svcs: ["cut", "blowout", "treatment", "color"] },
+    { id: "marisol", name: "Marisol", img: "img/marisol.jpg", role: { es: "Uñas y pedicure", en: "Nails and pedicures" }, week: [null, [10, 18], [10, 18], [10, 18], [10, 18], [10, 18], [9, 15]], svcs: ["gel", "pedi", "brows"] },
+    { id: "andrea", name: "Andrea", img: "img/andrea.jpg", role: { en: "Brows, lashes and nails", es: "Cejas, pestañas y uñas" }, week: [null, [12, 19], [12, 19], [12, 19], [12, 19], null, [9, 17]], svcs: ["brows", "lashes", "gel", "pedi"] },
+  ],
+  services: {
+    cut: { es: "Corte y secado", en: "Cut and style", price: 65 },
+    blowout: { es: "Blowout", en: "Blowout", price: 45 },
+    color: { es: "Color completo", en: "Full color", price: 120 },
+    balayage: { es: "Balayage", en: "Balayage", price: 220 },
+    treatment: { es: "Keratina", en: "Keratin treatment", price: 180 },
+    gel: { es: "Manicure en gel", en: "Gel manicure", price: 40 },
+    pedi: { es: "Pedicure spa", en: "Spa pedicure", price: 55 },
+    brows: { es: "Diseño de cejas", en: "Brow shaping", price: 35 },
+    lashes: { es: "Lifting de pestañas", en: "Lash lift", price: 85 },
+  },
+  cards: [
+    { img: "1522337360788-8b13dee7a37e", es: "Color y balayage", en: "Color and balayage", time: "2–3 h", from: 120, pick: "balayage" },
+    { img: "1580618672591-eb180b1a973f", es: "Cortes y blowouts", en: "Cuts and blowouts", time: "45–60 min", from: 45, pick: "cut" },
+    { img: "1610992015732-2449b76344bc", es: "Uñas y pedicure", en: "Nails and pedicures", time: "45–60 min", from: 40, pick: "gel" },
+    { img: "1487412947147-5cebf100ffc2", es: "Cejas y pestañas", en: "Brows and lashes", time: "30–60 min", from: 35, pick: "brows" },
+  ],
+  ribbon: { es: ["Color", "Balayage", "Cortes", "Blowouts", "Manicure", "Pedicure spa", "Cejas", "Pestañas", "Keratina"], en: ["Color", "Balayage", "Cuts", "Blowouts", "Manicures", "Spa pedicures", "Brows", "Lashes", "Keratin"] },
+  gram: ["1633681926022-84c23e8cb2d6", "1607779097040-26e80aa78e66", "1634449571010-02389ed0f9b0", "1457972729786-0411a3b2b626", "1540555700478-4be289fbecef", "1527799820374-dcf8d9d4a388", "1470259078422-826894b933aa"],
+  hours: [[null, null], [10, 19], [10, 19], [10, 19], [10, 20], [9, 20], [9, 17]],
+  reviews: [
+    { es: "Valeria me hizo el mejor balayage de mi vida. Ya no voy a otro lugar.", en: "Valeria gave me the best balayage of my life. I'm not going anywhere else.", who: "Daniela" },
+    { es: "Reservé en un minuto desde el teléfono. Súper fácil y puntuales.", en: "Booked in a minute from my phone. So easy, and they're on time.", who: "Jessica" },
+    { es: "El ambiente es precioso y Marisol es una artista con las uñas.", en: "Beautiful space, and Marisol is an artist with nails.", who: "Carolina" },
+    { es: "Andrea me dejó las cejas perfectas. Por fin encontré a mi persona.", en: "Andrea got my brows perfect. I finally found my person.", who: "Mónica" },
+    { es: "Camila escucha lo que quieres y lo hace mejor. Mi corte quedó divino.", en: "Camila listens to what you want and does it better. My cut is divine.", who: "Sofía" },
+    { es: "Limpio, bonito y siempre a tiempo. Me encanta poder reservar sola.", en: "Clean, beautiful and always on time. Love booking on my own.", who: "Paola" },
+  ],
+};
+
+const T = {
+  demoBar: { es: "Ejemplo con un salón ficticio, para mostrarte cómo se vería el tuyo.", en: "An example with a made-up salon, to show how yours could look." },
+  tourBtn: { es: "Ver el recorrido", en: "Take the tour" },
+  navSvc: { es: "Servicios", en: "Services" },
+  navTeam: { es: "Equipo", en: "Team" },
+  navRev: { es: "Reseñas", en: "Reviews" },
+  navVisit: { es: "Visítanos", en: "Visit" },
+  bookNow: { es: "Reservar", en: "Book now" },
+  heroKick: { es: "Salón de belleza · Miami", en: "Beauty salon · Miami" },
+  heroQ: { es: "“Las mejores manos<br><em>de Coral Way”</em>", en: "“The best hands<br><em>on Coral Way”</em>" },
+  heroBy: { es: "4.9 en Google", en: "4.9 on Google" },
+  discover: { es: "Reserva tu cita", en: "Book your visit" },
+  introK: { es: "Bienvenida a Casa Luz", en: "Welcome to Casa Luz" },
+  introP: { es: "Un salón en Coral Way donde el tiempo es <em>tuyo</em>: técnica experta, un espacio precioso y una cita que se siente como un regalo.", en: "A salon on Coral Way where the time is <em>yours</em>: expert technique, a beautiful space and an appointment that feels like a gift." },
+  onGoogle: { es: "en Google", en: "on Google" },
+  openTill: { es: "Abierto hoy hasta las 7pm", en: "Open today until 7pm" },
+  svcH: { es: "Nuestros <em>servicios</em>", en: "Our <em>services</em>" },
+  svcP: { es: "Cabello, uñas, cejas y pestañas, con el mismo cuidado en cada cita.", en: "Hair, nails, brows and lashes, with the same care at every visit." },
+  svcAll: { es: "Ver todos los servicios", en: "View all services" },
+  from: { es: "desde", en: "from" },
+  featH: { es: "Tu cita,<br><em>a tu manera.</em>", en: "Your visit,<br><em>your way.</em>" },
+  feat1: { es: "Escoge a tu estilista favorita", en: "Choose your favorite stylist" },
+  feat2: { es: "Mira su calendario real, sin llamar", en: "See her real calendar, no calls" },
+  feat3: { es: "Asegura tu cita con un depósito", en: "Hold your spot with a deposit" },
+  teamH: { es: "Nuestro <em>equipo</em>", en: "Our <em>team</em>" },
+  teamP: { es: "Escoge con quién, y mira su próximo espacio libre.", en: "Choose who, and see their next opening." },
+  bookH: { es: "Reserva <em>tu cita</em>", en: "Book <em>your visit</em>" },
+  bookP: { es: "Escoge estilista y servicio, y verás solo sus horas libres.", en: "Pick a stylist and service, and you'll see only their open times." },
+  s1: { es: "Estilista", en: "Stylist" },
+  s2: { es: "Servicio", en: "Service" },
+  s3: { es: "Día", en: "Day" },
+  s4: { es: "Hora", en: "Time" },
+  legend: { es: "Los días con punto tienen espacio.", en: "Days with a dot have openings." },
+  pickFirst: { es: "Escoge un día para ver las horas.", en: "Pick a day to see the times." },
+  pickTech: { es: "Escoge primero una estilista y un servicio.", en: "Pick a stylist and a service first." },
+  anyone: { es: "Cualquiera", en: "Anyone" },
+  nextOpen: { es: "Próximo espacio:", en: "Next opening:" },
+  sumTech: { es: "Estilista", en: "Stylist" },
+  sumSvc: { es: "Servicio", en: "Service" },
+  sumWhen: { es: "Cuándo", en: "When" },
+  sumDep: { es: "Depósito hoy", en: "Deposit today" },
+  name: { es: "Tu nombre", en: "Your name" },
+  phone: { es: "Tu teléfono", en: "Your phone" },
+  payBtn: { es: "Pagar depósito y reservar", en: "Pay deposit and book" },
+  fine: { es: "El depósito se descuenta del total. Es un ejemplo: no se cobra nada.", en: "The deposit comes off your total. Example only: nothing is charged." },
+  doneH: { es: "¡Listo, nos vemos!", en: "You're booked!" },
+  doneP: { es: "Te mandamos la confirmación por texto, y un recordatorio el día antes.", en: "We've texted your confirmation, and we'll remind you the day before." },
+  again: { es: "Reservar otra cita", en: "Book another" },
+  revH: { es: "Lo que dicen <em>nuestras clientas</em>", en: "Loved by <em>our clients</em>" },
+  revSum: { es: "4.9 · Excelente · más de 180 reseñas", en: "4.9 · Rated excellent · 180+ reviews" },
+  fH: { es: "Hecho para<br><em>sentirte en casa.</em>", en: "Made to<br><em>feel like home.</em>" },
+  fQ: { es: "“Quería un salón donde cada clienta se sintiera cuidada, nunca apurada.”", en: "“I wanted a salon where every client feels cared for, never rushed.”" },
+  fP: { es: "Casa Luz abrió en Coral Way con una idea sencilla: técnica experta, un espacio bonito y tiempo de verdad para cada clienta. Hoy somos un equipo de cuatro, con color, cortes, uñas, cejas y pestañas bajo un mismo techo.", en: "Casa Luz opened on Coral Way with a simple idea: expert technique, a beautiful space and real time for every client. Today we're a team of four, with color, cuts, nails, brows and lashes under one roof." },
+  fRole: { es: "Fundadora y colorista", en: "Founder and colorist" },
+  footAbout: { es: "Salón de belleza en Coral Way, Miami. Cabello, uñas, cejas y pestañas.", en: "Beauty salon on Coral Way, Miami. Hair, nails, brows and lashes." },
+  c1: { es: "Color y balayage", en: "Color and balayage" },
+  c2: { es: "Cortes y blowouts", en: "Cuts and blowouts" },
+  c3: { es: "Uñas y pedicure", en: "Nails and pedicures" },
+  c4: { es: "Cejas y pestañas", en: "Brows and lashes" },
+  fSalon: { es: "El salón", en: "The salon" },
+  joinH: { es: "Únete a la lista", en: "Join the list" },
+  joinP: { es: "$15 de descuento en tu primera cita.", en: "$15 off your first visit." },
+  closed: { es: "Cerrado", en: "Closed" },
+  credit: { es: 'Hecho por <a href="https://builtbycapri.com">Built by Capri</a>', en: 'Made by <a href="https://builtbycapri.com">Built by Capri</a>' },
+  days: { es: ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"], en: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"] },
+  tour: {
+    es: [
+      ["#facts", "Lo primero que ven: sus estrellas de Google, dónde están y si están abiertos. Nadie más pregunta \"¿dónde están ubicados?\"."],
+      ["#servicios", "Sus servicios con fotos, tiempo y precio. Un toque y empieza la reserva."],
+      ["#equipo", "Cada técnica tiene su tarjeta, con lo que hace y su próximo espacio libre."],
+      [".book-btn", "Booking opens on its own page, step by step: stylist, service, time, deposit. Try it after the tour."],
+      [".lang", "Todo en español y en inglés, con un toque."],
+      ["#waBtn", "Y WhatsApp sigue ahí para el que prefiera escribir."],
+    ],
+    en: [
+      ["#facts", "The first thing people see: your Google stars, where you are and whether you're open. Nobody has to ask \"where are you located?\" again."],
+      ["#servicios", "Your services with photos, timing and price. One tap starts a booking."],
+      ["#equipo", "Every tech gets a card, with what they do and their next opening."],
+      [".book-btn", "La reserva abre en su propia página, paso a paso: estilista, servicio, hora y depósito. Pruébala después del recorrido."],
+      [".lang", "Everything in Spanish and English, with one tap."],
+      ["#waBtn", "And WhatsApp is still there for anyone who'd rather message."],
+    ],
+  },
+  tourNext: { es: "Siguiente", en: "Next" },
+  tourDone: { es: "Listo", en: "Done" },
+  tourSkip: { es: "Saltar", en: "Skip" },
+};
+
+// ---------- State ----------
+let lang = "en";
+const S = { tech: null, svc: null, day: null, time: null, month: 0, booked: false };
+const $ = (s) => document.querySelector(s);
+const t = (k) => T[k][lang];
+const today = new Date(); today.setHours(0, 0, 0, 0);
+const addDays = (d, n) => { const x = new Date(d); x.setDate(x.getDate() + n); return x; };
+const key = (d) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+const fromKey = (k) => { const [y, m, d] = k.split("-").map(Number); return new Date(y, m - 1, d); };
+const loc = () => (lang === "es" ? "es-US" : "en-US");
+const ampm = (h, m) => `${((h + 11) % 12) + 1}:${m ? "30" : "00"}${h < 12 ? "am" : "pm"}`;
+const fresh = (patch) => { Object.assign(S, { booked: false }, patch); render(); };
+
+// Made-up but steady availability: the same day always looks the same.
+const seed = (s) => { let h = 0; for (const c of s) h = (h * 31 + c.charCodeAt(0)) >>> 0; return h; };
+function slots(techId, d) {
+  const tech = SALON.techs.find((x) => x.id === techId);
+  const day = tech.week[d.getDay()];
+  if (!day || d < today || d > addDays(today, 45)) return [];
+  const [open, close] = day;
+  const out = [];
+  for (let h = open; h < close; h++) for (const m of [0, 30]) out.push({ h, m, taken: seed(techId + key(d) + h + m) % 10 < 4 });
+  if (seed(techId + key(d)) % 7 === 0) out.forEach((s) => (s.taken = true));
+  return out;
+}
+const techsFor = () => (S.tech && S.tech !== "any" ? [S.tech] : SALON.techs.filter((x) => !S.svc || x.svcs.includes(S.svc)).map((x) => x.id));
+function openSlots(d) {
+  const by = new Map();
+  for (const id of techsFor()) for (const s of slots(id, d)) {
+    const k = s.h * 2 + s.m / 30, cur = by.get(k);
+    if (!cur || (cur.taken && !s.taken)) by.set(k, { ...s, id });
+  }
+  return [...by.entries()].sort((a, b) => a[0] - b[0]).map((e) => e[1]);
+}
+function nextOpening(techId) {
+  for (let i = 0; i < 30; i++) { const d = addDays(today, i); const s = slots(techId, d).find((x) => !x.taken); if (s) return { d, s }; }
+  return null;
+}
+
+// ---------- Render ----------
+function words() {
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-t]").forEach((el) => {
+    const v = T[el.dataset.t][lang];
+    if (el.hasAttribute("data-html")) el.innerHTML = v; else el.textContent = v;
+  });
+  document.querySelectorAll(".lang button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  const items = SALON.ribbon[lang].map((w) => `<span>${w}</span>`).join("");
+  $("#track").innerHTML = items + items;
+}
+
+function services() {
+  $("#svcs").innerHTML = SALON.cards.map((c, i) => `<button type="button" class="card rv d${i}${$("#svcs").dataset.shown ? " in" : ""}" data-k="${c.pick}">
+    <div class="ph"><img src="${IMG(c.img, 800)}" alt="" loading="lazy" /></div>
+    <h3>${c[lang]}</h3><p>${c.time} · ${t("from")} $${c.from}</p></button>`).join("");
+  $("#svcs").querySelectorAll(".card").forEach((b) => b.onclick = () => {
+    location.href = `booking.html?svc=${b.dataset.k}`;
+  });
+}
+
+function team() {
+  $("#team").innerHTML = SALON.techs.map((x, i) => {
+    const n = nextOpening(x.id);
+    const when = n ? `${n.d.toLocaleDateString(loc(), { weekday: "short", month: "short", day: "numeric" })}, ${ampm(n.s.h, n.s.m)}` : "";
+    return `<button type="button" class="card rv d${i}${$("#team").dataset.shown ? " in" : ""}" data-id="${x.id}" aria-pressed="${S.tech === x.id}">
+      <div class="ph"><img src="${x.img}" alt="" loading="lazy" /><div class="over"><b>${x.name}</b><span>${x.role[lang]}</span></div></div>
+      <p class="open">${t("nextOpen")} ${when}</p></button>`;
+  }).join("");
+  $("#team").querySelectorAll(".card").forEach((b) => b.onclick = () => {
+    location.href = `booking.html?tech=${b.dataset.id}`;
+  });
+}
+
+function rest() {
+  $("#reviews").innerHTML = SALON.reviews.map((r, i) => `<div class="review rv d${i % 3}${$("#reviews").dataset.shown ? " in" : ""}"><span class="stars">★★★★★</span><p>${r[lang]}</p><b>${r.who}</b></div>`).join("");
+  $("#hours").innerHTML = [1, 2, 3, 4, 5, 6, 0].map((i) => { const [o, c] = SALON.hours[i]; return `${T.days[lang][i]} · ${o == null ? t("closed") : `${ampm(o, 0)}–${ampm(c, 0)}`}`; }).join("<br>");
+}
+
+// Fade things up as they scroll into view. Anything already revealed stays revealed.
+const io = "IntersectionObserver" in window ? new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); if (e.target.parentElement) e.target.parentElement.dataset.shown = "1"; io.unobserve(e.target); } }), { threshold: 0.12 }) : null;
+function watch() {
+  document.querySelectorAll(".rv:not(.in)").forEach((el) => { if (!io) el.classList.add("in"); else io.observe(el); });
+}
+
+function render() { words(); services(); team(); rest(); watch(); }
+
+$("#strip").innerHTML = SALON.gram.map((i) => `<div class="cell"><img src="${IMG(i, 700)}" alt="" loading="lazy" /></div>`).join("");
+document.querySelector(".nav-btn.l").onclick = () => $("#strip").scrollBy({ left: -$("#strip").clientWidth / 2, behavior: "smooth" });
+document.querySelector(".nav-btn.r").onclick = () => $("#strip").scrollBy({ left: $("#strip").clientWidth / 2, behavior: "smooth" });
+$("#joinForm").onsubmit = (e) => { e.preventDefault(); e.target.querySelector("input").value = ""; e.target.querySelector("button").textContent = "✓"; };
+document.querySelectorAll(".lang button").forEach((b) => b.onclick = () => { lang = b.dataset.lang; render(); document.querySelectorAll(".rv").forEach((el) => el.classList.add("in")); if (tourOn) showStep(); });
+
+// ---------- Guided tour ----------
+let tourOn = false, step = 0;
+const dim = document.createElement("div"); dim.className = "tour-dim"; dim.innerHTML = '<div class="tour-ring"></div>';
+const tip = document.createElement("div"); tip.className = "tour-tip"; tip.setAttribute("role", "dialog");
+let target = null;
+function place() {
+  if (!tourOn || !target) return;
+  const r = target.getBoundingClientRect();
+  Object.assign(dim.firstChild.style, { top: r.top - 6 + "px", left: r.left - 6 + "px", width: r.width + 12 + "px", height: r.height + 12 + "px" });
+  const h = tip.offsetHeight, w = tip.offsetWidth;
+  let top = r.bottom + 16 + h < innerHeight ? r.bottom + 16 : r.top - 16 - h;
+  if (top < 16 || top + h > innerHeight - 16) top = innerHeight - h - 16;
+  tip.style.top = top + "px";
+  tip.style.left = Math.min(Math.max(16, r.left), innerWidth - w - 16) + "px";
+}
+function showStep() {
+  const steps = T.tour[lang];
+  const [sel, say] = steps[step];
+  target = $(sel);
+  tip.innerHTML = `<p class="n">${step + 1} / ${steps.length}</p><p>${say}</p>
+    <div class="act"><button type="button" id="tSkip">${t("tourSkip")}</button><button type="button" class="go" id="tNext">${step === steps.length - 1 ? t("tourDone") : t("tourNext")}</button></div>`;
+  $("#tNext").onclick = () => (step === steps.length - 1 ? endTour() : (step++, showStep()));
+  $("#tSkip").onclick = endTour;
+  const r = target.getBoundingClientRect();
+  if (r.top < 90 || r.bottom > innerHeight) target.scrollIntoView({ behavior: "smooth", block: target.offsetHeight > innerHeight * 0.6 ? "start" : "center" });
+  place();
+  $("#tNext").focus({ preventScroll: true });
+}
+function startTour() {
+  tourOn = true; step = 0;
+  document.querySelectorAll(".rv").forEach((el) => el.classList.add("in"));
+  document.body.append(dim, tip); showStep();
+}
+function endTour() { tourOn = false; target = null; dim.remove(); tip.remove(); try { localStorage.setItem("casaluz-toured", "1"); } catch {} }
+// The highlight follows the page while it scrolls, so there's no waiting between steps.
+addEventListener("scroll", () => requestAnimationFrame(place), { passive: true });
+addEventListener("resize", place);
+addEventListener("keydown", (e) => { if (tourOn && e.key === "Escape") endTour(); });
+$("#tourBtn").onclick = startTour;
+
+render();
+let seen = false; try { seen = localStorage.getItem("casaluz-toured") === "1"; } catch {}
+if (!seen) setTimeout(startTour, 700);
+</script>
+</body>
+</html>
